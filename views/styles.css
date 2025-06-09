@@ -1,0 +1,20 @@
+/* Container that centers child horizontally */
+.center-grid {
+  color: aqua;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 100px; /* Just to move it down for visibility */
+}
+
+/* The box itself */
+.login-box {
+  padding: 20px;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  font-size: 24px;
+}
+
+body {
+  background-color: hotpink !important;
+}

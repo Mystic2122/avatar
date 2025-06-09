@@ -6,12 +6,16 @@ const connectDB = require('./routes/db');
 const app = express();
 
 app.set('view engine', 'ejs')
-app.use(express.static("views"))
+app.use(express.static("public"))
 
 app.get("/", (req, res) => { //request and response
   console.log('Here')
   res.render('index', { text: "World"})
 }) 
+
+app.get('/login', (req, res) => {
+  res.render('login');
+});
 
 const userRouter = require("./routes/users")
 const dbRouter = require("./routes/db")

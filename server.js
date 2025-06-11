@@ -10,6 +10,9 @@ const app = express();
 app.set('view engine', 'ejs')
 app.use(express.static("public"))
 
+
+app.use(express.urlencoded({ extended: true }));
+
 app.get("/", (req, res) => { //request and response
   console.log('Here')
   res.render('index', { text: "World"})
@@ -22,6 +25,8 @@ app.get('/login', (req, res) => {
 app.get('/signup', (req, res) => {
   res.render('signup');
 });
+
+const User = require('./schema/Users');
 
 const dbRouter = require("./routes/db")
 

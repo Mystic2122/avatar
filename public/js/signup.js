@@ -1,15 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const button = document.getElementById("submitBtn");
+  const form = document.getElementById("signupForm");
 
-  button.addEventListener("click", function () {
-    const username = document.getElementById("username").value;
+  form.addEventListener("submit", function (event) {
     const password = document.getElementById("password").value;
     const confirm = document.getElementById("confirmPassword").value;
 
     if (password !== confirm) {
+      event.preventDefault(); // stop form from submitting
       alert("Passwords do not match.");
-    } else {
-      alert(`Welcome, ${username}!`);
     }
+    // else: form submits normally to /users/signup
   });
 });

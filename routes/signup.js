@@ -4,7 +4,7 @@ const User = require('../schema/Users');
 
 const router = express.Router();
 
-router.post('/signup', async (req, res) => {
+router.post('/', async (req, res) => {
   console.log("🔥 Signup route hit");
   console.log("Received body:", req.body);
 
@@ -19,13 +19,15 @@ router.post('/signup', async (req, res) => {
     if (existingUser) {
       return res.status(409).send("Username already taken"); // 409 Conflict
     }
+
     const hashed = await bcrypt.hash(password, 10);
     const newUser = new User({ username, password: hashed });
     await newUser.save();
-    console.log("✅ User saved to database");
-    res.send("User registered!");
+
+    console.log("User saved to database");
+    res.redirect(`/game?username=${encodeURIComponent(username)}`);
   } catch (err) {
-    console.error("❌ Error saving user:", err);
+    console.error("Error saving user:", err);
     res.status(500).send('Database Error');
   }
 });

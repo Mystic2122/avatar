@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const connectDB = require('./routes/db');
 const signupRouter = require('./routes/signup');
-
+const loginRouter = require('./routes/login');
 
 const app = express();
 
@@ -15,16 +15,15 @@ app.use(express.urlencoded({ extended: true }));
 
 app.get("/", (req, res) => { //request and response
   console.log('Here')
-  res.render('index', { text: "World"})
+  res.render('index')
 }) 
 
-app.get('/login', (req, res) => {
-  res.render('login');
+
+app.get('/game', (req, res) => {
+  const username = req.query.username || 'Player';
+  res.render('game', { username });
 });
 
-app.get('/signup', (req, res) => {
-  res.render('signup');
-});
 
 const User = require('./schema/Users');
 
@@ -33,7 +32,8 @@ const dbRouter = require("./routes/db")
 connectDB();
 
 app.use("/db", dbRouter)
-app.use("/users", signupRouter);
+app.use("/signup", signupRouter);
+app.use('/login', loginRouter);
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");

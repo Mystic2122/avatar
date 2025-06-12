@@ -8,14 +8,17 @@
 
 
   <body>
-    <h2 class="slHeader">
-
-    </h2>
+    
     <div class="loginForm">
+      <h2 class="slHeader">
+
+      </h2>
       <form method="POST" action="/login">
-        <input type="text" name="username" placeholder="Username" required /><br />
-        <input type="password" name="password" placeholder="Password" required /><br />
-        <button class="slbtn" type="submit">Login</button>
+        <input class="inputbox" type="text" name="username" placeholder="Username" required /><br />
+        <input class="inputbox" type="password" name="password" placeholder="Password" required /><br />
+        <div class="btn-wrapper">
+          <button class="slbtn" type="submit">Login</button>
+        </div>
       </form>
     </div>
   </body>

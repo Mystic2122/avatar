@@ -25,7 +25,7 @@
   text-decoration: none;
   border-radius: 5px;
   font-weight: bold;
-  font-size: 1px;
+  font-size: 15px;
   text-align: center;
   transition: background-color 0.3s;
 }
@@ -50,7 +50,24 @@
 }
 
 .slbtn{
-  font-size: 1px;
+  display: inline-block;
+  padding: 10px;
+  background-color: #ff7300;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 10px;
+  
+  text-align: center;
+  transition: background-color 0.3s;
+}
+
+.btn-wrapper{
+  justify-content: center;
+}
+
+.inputbox{
+  margin: 1em;
 }
 
 html, body {

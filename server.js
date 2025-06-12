@@ -1,6 +1,4 @@
 const express = require('express');
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
 const connectDB = require('./routes/db');
 const signupRouter = require('./routes/signup');
 const loginRouter = require('./routes/login');
@@ -38,7 +36,3 @@ app.use('/login', loginRouter);
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
-
-
-
-// Comment :)

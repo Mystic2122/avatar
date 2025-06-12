@@ -4,8 +4,12 @@ const User = require('../schema/Users');
 
 const router = express.Router();
 
+router.get('/', (req, res) => {
+  res.render('signup');
+});
+
 router.post('/', async (req, res) => {
-  console.log("🔥 Signup route hit");
+  console.log("Signup route hit");
   console.log("Received body:", req.body);
 
   const { username, password, confirmPassword } = req.body;
@@ -31,6 +35,10 @@ router.post('/', async (req, res) => {
     res.status(500).send('Database Error');
   }
 });
+
+
+
+
 
 
 module.exports = router;

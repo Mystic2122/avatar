@@ -21,8 +21,10 @@ app.get('/difficulty', (req, res) => {
 });
 
 app.get('/game', (req, res) => {
+  console.log("🟢 /game route hit");
   const username = req.query.username || 'Player';
-  res.render('game', { username });
+  const difficulty = req.query.difficulty || 'easy';
+  res.render('game', { username, difficulty });
 });
 
 

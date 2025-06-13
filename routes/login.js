@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
 
   // ✅ Login success!
   console.log("✅ Login successful for", username);
-  res.redirect(`/game?username=${encodeURIComponent(username)}`);
+  res.redirect(`/difficulty?username=${encodeURIComponent(username)}`);
 });
 
 module.exports = router;

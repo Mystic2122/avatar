@@ -16,11 +16,16 @@ app.get("/", (req, res) => { //request and response
   res.render('index')
 }) 
 
+app.get('/difficulty', (req, res) => {
+  res.render('difficulty');
+});
 
 app.get('/game', (req, res) => {
   const username = req.query.username || 'Player';
   res.render('game', { username });
 });
+
+
 
 
 const User = require('./schema/Users');

@@ -3,23 +3,23 @@
   <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <link rel="stylesheet" href="../public/styles.css">
+    <link rel="stylesheet" href="/styles.css">
   </head>
 
 
   <body>
-    <div class="input-box">
-        <input type="text" placeholder="Username" required>
-    </div>
-    <div class="input-box">
-        <input type="password" placeholder="Password" required>
-    </div>
-    <div class="remember-forgot">
-        <label>
-        <input type="checkbox">
-        Remember me
-        </label>
-        <a href="#">Forgot password</a>
+    
+    <div class="loginForm">
+      <h2 class="slHeader">
+
+      </h2>
+      <form method="POST" action="/login">
+        <input class="inputbox" type="text" name="username" placeholder="Username" required /><br />
+        <input class="inputbox" type="password" name="password" placeholder="Password" required /><br />
+        <div class="btn-wrapper">
+          <button class="slbtn" type="submit">Login</button>
+        </div>
+      </form>
     </div>
   </body>
 </html>

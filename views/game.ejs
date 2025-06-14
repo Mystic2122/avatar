@@ -1,0 +1,20 @@
+<!-- views/game.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Game</title>
+</head>
+<body>
+  <h1>Welcome to the Game, <%= username %>!</h1>
+  <!-- Insert your game here -->
+  <h3>Difficulty is set to <%= difficulty %></h3>
+  <img src="<%= image.url %>" alt="Guess this image!" style="max-width: 300px;">
+
+    <form method="POST" action="/guess">
+      <input type="text" name="guess" placeholder="Enter your guess" required />
+      <input type="hidden" name="imageId" value="<%= image._id %>">
+      <button type="submit">Submit</button>
+    </form>
+</body>
+</html>

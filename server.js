@@ -31,12 +31,8 @@ app.get('/difficulty', (req, res) => {
   res.render('difficulty');
 });
 
-app.get('/game', (req, res) => {
-  console.log("🟢 /game route hit");
-  const username = req.session?.user?.username || 'Player';
-  const difficulty = req.query.difficulty || 'easy';
-  res.render('game', { username, difficulty });
-});
+const gameRouter = require('./routes/game'); // adjust path if needed
+app.use('/game', gameRouter);
 
 
 

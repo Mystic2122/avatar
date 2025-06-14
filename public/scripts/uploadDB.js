@@ -26,13 +26,12 @@ const uploadImages = async () => {
     const filePath = path.join(screenshotDir, file);
 
     const [episodePart, idDiffPart] = file.split('_');
-    const id = parseInt(idDiffPart.slice(0, 2));
-    const difficultyChar = idDiffPart[2].toUpperCase();
-    const difficultyMap = { E: 'easy', M: 'medium', H: 'hard' };
-    const difficulty = difficultyMap[difficultyChar] || 'easy';
+    const img_id = parseInt(idDiffPart.slice(0, 2));
+    const difficulty = idDiffPart[2].toUpperCase();
+
     const answer = episodePart;
 
-    const exists = await Image.findOne({ id, answer });
+    const exists = await Image.findOne({ img_id, answer });
     if (exists) {
         console.log(`⏩ Skipping ${file} (already exists in DB)`);
         continue;
@@ -44,7 +43,7 @@ const uploadImages = async () => {
       });
 
       const newImage = new Image({
-        id,
+        img_id,
         url: result.secure_url,
         answer,
         difficulty

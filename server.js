@@ -2,6 +2,10 @@ const express = require('express');
 const connectDB = require('./routes/db');
 const signupRouter = require('./routes/signup');
 const loginRouter = require('./routes/login');
+const session = require('express-session');
+require('dotenv').config();
+
+
 
 const app = express();
 
@@ -10,6 +14,13 @@ app.use(express.static("public"))
 
 
 app.use(express.urlencoded({ extended: true }));
+
+app.use(session({
+  secret: process.env.SESSION_SECRET, // change this to a strong, private string
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // set to true if using HTTPS
+}));
 
 app.get("/", (req, res) => { //request and response
   console.log('Here')
@@ -22,7 +33,7 @@ app.get('/difficulty', (req, res) => {
 
 app.get('/game', (req, res) => {
   console.log("🟢 /game route hit");
-  const username = req.query.username || 'Player';
+  const username = req.session?.user?.username || 'Player';
   const difficulty = req.query.difficulty || 'easy';
   res.render('game', { username, difficulty });
 });

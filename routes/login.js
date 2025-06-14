@@ -13,21 +13,23 @@ router.get('/', (req, res) => {
 router.post('/', async (req, res) => {
   const { username, password } = req.body;
 
-  // 1. Find the user
   const user = await User.findOne({ username });
   if (!user) {
     return res.render('login', { error: "Invalid username or password" });
   }
 
-  // 2. Check password
   const match = await bcrypt.compare(password, user.password);
   if (!match) {
     return res.render('login', { error: "Incorrect password" });
   }
 
-  // ✅ Login success!
+  // ✅ Store the user in the session
+  req.session.user = { username: user.username };
   console.log("✅ Login successful for", username);
-  res.redirect(`/difficulty?username=${encodeURIComponent(username)}`);
+
+  // ✅ Now no need to pass ?username= in the URL
+  res.redirect('/difficulty');
 });
+
 
 module.exports = router;

@@ -34,6 +34,8 @@ app.get('/difficulty', (req, res) => {
 const gameRouter = require('./routes/game'); // adjust path if needed
 app.use('/game', gameRouter);
 
+const guessRouter = require('./routes/guess');
+app.use('/guess', guessRouter);
 
 
 

@@ -4,9 +4,9 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     highScores: {
-        E: { type: Number, default: 0 }, // Easy
-        M: { type: Number, default: 0 }, // Medium
-        H: { type: Number, default: 0 }  // Hard
+        E: { type: Number, default: 0 }, 
+        M: { type: Number, default: 0 }, 
+        H: { type: Number, default: 0 }
   }
 })
 

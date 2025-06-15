@@ -35,10 +35,27 @@ router.get('/', async (req, res) => {
       return res.send("⚠️ No images available for this difficulty.");
     }
 
+    const episodes = await Image.aggregate([
+      {
+        $group: {
+          _id: "$answer",
+          title: { $first: "$title" }
+        }
+      },
+      { $sort: { _id: 1 } }
+    ]);
+    // Reset score if not already started
+    if (req.session.score === undefined) {
+      req.session.score = 0;
+    }
+
+
     res.render('game', {
       username,
       difficulty,
-      image: image[0]
+      image: image[0],
+      episodes,
+      score: req.session.score
     });
 
   } catch (err) {

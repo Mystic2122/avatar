@@ -4,6 +4,7 @@ const imgSchema = new mongoose.Schema({
     img_id: Number,
     url: String,
     answer: String, /* S1E01 */
+    title: String,
     difficulty: String,
 
 })

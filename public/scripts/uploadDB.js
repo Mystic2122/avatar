@@ -13,6 +13,14 @@ cloudinary.config({
   api_secret: process.env.IMG_SECRET
 });
 
+const episodeTitleMap = {
+  S1E01: "The Boy in the Iceberg",
+  S1E02: "The Avatar Returns",
+  S1E03: "The Southern Air Temple",
+  S1E04: "The Warriors of Kyoshi",
+  // ... Add the rest as needed
+};
+
 const screenshotDir = path.join(__dirname, '..', '..', 'screenshots');
 
 const uploadImages = async () => {
@@ -30,6 +38,7 @@ const uploadImages = async () => {
     const difficulty = idDiffPart[2].toUpperCase();
 
     const answer = episodePart;
+    const title = episodeTitleMap[answer] || 'Unknown Episode';
 
     const exists = await Image.findOne({ img_id, answer });
     if (exists) {
@@ -46,6 +55,7 @@ const uploadImages = async () => {
         img_id,
         url: result.secure_url,
         answer,
+        title,
         difficulty
       });
 

@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
     medium: 'M',
     hard: 'H'
   };
-
+// Fix here
   const rawDifficulty = req.query.difficulty?.toLowerCase() || 'easy';
   const difficulty = diffMap[rawDifficulty] || 'E';
 
@@ -39,7 +39,8 @@ router.get('/', async (req, res) => {
       {
         $group: {
           _id: "$answer",
-          title: { $first: "$title" }
+          title: { $first: "$title" },
+          season: { $first: "$season" }
         }
       },
       { $sort: { _id: 1 } }

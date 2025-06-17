@@ -77,3 +77,16 @@ html, body {
   width: 100%;
   overflow: hidden;
 }
+
+.blue-button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.blue-button:hover {
+  background-color: #0056b3;
+}

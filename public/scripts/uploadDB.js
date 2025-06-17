@@ -39,7 +39,7 @@ const uploadImages = async () => {
 
     const answer = episodePart;
     const title = episodeTitleMap[answer] || 'Unknown Episode';
-
+    const season = episodePart[1]
     const exists = await Image.findOne({ img_id, answer });
     if (exists) {
         console.log(`⏩ Skipping ${file} (already exists in DB)`);
@@ -56,6 +56,7 @@ const uploadImages = async () => {
         url: result.secure_url,
         answer,
         title,
+        season,
         difficulty
       });
 

@@ -12,11 +12,15 @@
   <img src="<%= image.url %>" alt="Guess this image!" style="max-width: 300px;">
 
   <form method="POST" action="/guess">
-    <% episodes.forEach(ep => { %>
-      <button type="submit" name="guess" value="<%= ep._id %>">
-        <%= ep._id %> - <%= ep.title %>
-      </button>
-    <% }) %>
+          <% episodes.forEach(ep => { %>
+  <button 
+    type="submit" 
+    name="guess" 
+    value="<%= ep._id %>" 
+    class="<%= ep.season == 1 ? 'blue-button' : '' %>">
+    <%= ep._id %> - <%= ep.title %>
+  </button>
+<% }) %>
     <input type="hidden" name="imageId" value="<%= image._id %>">
   </form>
   <div>

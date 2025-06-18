@@ -1,31 +1,55 @@
-<!-- views/game.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Game</title>
+  <title>Guess the Episode</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <h1>Welcome to the Game, <%= username %>!</h1>
-  <!-- Insert your game here -->
-  <h3>Difficulty is set to <%= difficulty %></h3>
-  <img src="<%= image.url %>" alt="Guess this image!" style="max-width: 300px;">
+  <div class="game-background"></div>
+  <div class="game-info">
+      <h1>Welcome, <%= username %>!</h1>
+      <h2>Difficulty: <%= difficulty.toUpperCase() %></h2>
+      <h3>Current Score: <%= score %></h3>
+      <h3>High Score: <%= highscore %></h3>
+    </div>
+  <div class="game-container">
+    
 
-  <form method="POST" action="/guess">
-          <% episodes.forEach(ep => { %>
-  <button 
-    type="submit" 
-    name="guess" 
-    value="<%= ep._id %>" 
-    class="<%= ep.season == 1 ? 'blue-button' : '' %>">
-    <%= ep._id %> - <%= ep.title %>
-  </button>
-<% }) %>
-    <input type="hidden" name="imageId" value="<%= image._id %>">
-  </form>
-  <div>
-    Score: <%= score %>
+    <div class="image-container">
+      <img class="game-image" src="<%= image.url %>" alt="Guess this episode">
+    </div>
+
+    <!-- Bottom-fixed form -->
+    <form method="POST" action="/game" class="guess-form">
+      <input type="hidden" name="correctAnswer" value="<%= image.answer %>">
+      <input type="hidden" name="difficulty" value="<%= difficulty %>">
+
+      <div class="game-btn-group">
+        <% const seasons = [
+          { number: 1, name: "Water" },
+          { number: 2, name: "Earth" },
+          { number: 3, name: "Fire" }
+        ]; %>
+
+        <% seasons.forEach(season => { %>
+          <div class="dropdown-wrapper">
+            <select
+              name="guess"
+              id="season-<%= season.number %>"
+              class="styled-dropdown s<%= season.number %>-btn"
+              onchange="this.form.submit()"
+            >
+              <option disabled selected>Book <%= season.number %>: <%= season.name %></option>
+              <% episodes.filter(ep => ep.season === season.number).forEach(ep => { %>
+                <option value="<%= ep._id %>"><%= ep._id %> - <%= ep.title %></option>
+              <% }) %>
+            </select>
+          </div>
+        <% }) %>
+      </div>
+    </form>
   </div>
-
 </body>
+
 </html>

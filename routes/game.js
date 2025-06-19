@@ -48,7 +48,10 @@ router.get('/', async (req, res) => {
       image: image[0],
       episodes,
       score: req.session.score,
-      highscore
+      highscore,
+      wrong: false,
+      correctAnswerId: null,
+      correctAnswerTitle: null
     });
 
   } catch (err) {
@@ -75,26 +78,52 @@ router.post('/', async (req, res) => {
   }
 
   // ⛔ Wrong answer – check and update high score if needed
-  try {
-    const user = await User.findOne({ username });
-    if (!user) {
-      return res.status(404).send("User not found.");
-    }
-
-    const previousHigh = user.highScores?.[difficulty] || 0;
-
-    if (currentScore > previousHigh) {
-      user.highScores[difficulty] = currentScore;
-      await user.save();
-      console.log(`🏆 New high score for ${difficulty}: ${currentScore}`);
-    }
-
-    req.session.score = 0;
-    res.send(`❌ Wrong guess! Final score: ${currentScore} <br><a href="/game">Try Again</a>`);
-  } catch (err) {
-    console.error("❌ Error updating high score:", err);
-    res.status(500).send("Internal server error");
+try {
+  const user = await User.findOne({ username });
+  if (!user) {
+    return res.status(404).send("User not found.");
   }
+
+  const previousHigh = user.highScores?.[difficulty] || 0;
+  if (currentScore > previousHigh) {
+    user.highScores[difficulty] = currentScore;
+    await user.save();
+    console.log(`🏆 New high score for ${difficulty}: ${currentScore}`);
+  }
+
+  req.session.score = 0;
+
+  const newImage = await Image.aggregate([
+    { $match: { difficulty } },
+    { $sample: { size: 1 } }
+  ]);
+
+  const episodes = await Image.aggregate([
+    {
+      $group: {
+        _id: "$answer",
+        title: { $first: "$title" },
+        season: { $first: "$season" }
+      }
+    },
+    { $sort: { _id: 1 } }
+  ]);
+
+  res.render('game', {
+    username,
+    difficulty,
+    image: newImage[0],
+    episodes,
+    score: 0,
+    highscore: user.highScores[difficulty] || 0,
+    wrong: true,
+    correctAnswerId: correctId,
+    correctAnswerTitle: episodes.find(ep => ep._id === correctId)?.title || 'Unknown'
+  });
+} catch (err) {
+  console.error("❌ Error updating high score:", err);
+  res.status(500).send("Internal server error");
+}
 });
 
 module.exports = router;

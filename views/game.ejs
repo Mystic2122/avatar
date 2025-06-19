@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Guess the Episode</title>
-  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/game_styles.css">
 </head>
 <body>
   <div class="game-background"></div>
@@ -50,6 +50,12 @@
       </div>
     </form>
   </div>
+  <% if (wrong) { %>
+    <div class="feedback wrong" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); color: red; font-size: 1.5rem; z-index: 10000;">
+      ❌ Wrong! The correct answer was <%= correctAnswerId %> - <%= correctAnswerTitle %>
+    </div>
+  <% } %>
+
 </body>
 
 </html>

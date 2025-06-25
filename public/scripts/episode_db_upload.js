@@ -1,17 +1,7 @@
-const fs = require('fs');
-const path = require('path');
-const mongoose = require('mongoose');
-const cloudinary = require('cloudinary').v2;
-require('dotenv').config();
-
+const { default: mongoose } = require('mongoose');
 const connectDB = require('../../routes/db'); 
-const Image = require('../../schema/Image'); // your imgSchema
+const Episode = require('../../schema/Episode');
 
-cloudinary.config({
-  cloud_name: process.env.IMG_NAME,
-  api_key: process.env.IMG_PUBLIC,
-  api_secret: process.env.IMG_SECRET
-});
 
 const episodeTitleMap = {
   S1E01: "The Boy in the Iceberg",
@@ -74,55 +64,39 @@ const episodeTitleMap = {
   S3E19: "Sozin's Comet, Part 4: Avatar Aang",
 
 };
-const diffMap = { E: 'easy', M: 'medium', H: 'hard' };
-const screenshotDir = path.join(__dirname, '..', '..', 'screenshots');
 
-const uploadImages = async () => {
-  await connectDB(); // ✅ call your existing DB connect function
 
-  const files = fs.readdirSync(screenshotDir);
+const uploadEpisodes = async () => {
+  try {
+    await connectDB();
 
-  for (const file of files) {
-    if (!file.match(/\.(jpg|jpeg|png)$/i)) continue;
+    for (const epCode of Object.keys(episodeTitleMap)) {
+      const title = episodeTitleMap[epCode];
 
-    const filePath = path.join(screenshotDir, file);
+      // Parse season and episode number from the code (e.g., S2E13 → season=2, episode_number=13)
+      const match = epCode.match(/^S(\d+)E(\d+)$/);
+      
 
-    const baseName = path.basename(file, path.extname(file)); // "S1E01_01H"
-    const [episodePart, idDiffPart] = baseName.split('_');
-    const img_id = parseInt(idDiffPart.slice(0, 2));
-    const difficulty = diffMap[idDiffPart[2].toUpperCase()];
+      const season = parseInt(match[1], 10);
+      const episode_number = parseInt(match[2], 10);
 
-    const answer = episodePart;
-    const title = episodeTitleMap[answer] || 'Unknown Episode';
-    const season = episodePart[1]
-    const exists = await Image.findOne({ img_id, answer });
-    if (exists) {
-        console.log(`⏩ Skipping ${file} (already exists in DB)`);
-        continue;
-    }
-
-    try {
-      const result = await cloudinary.uploader.upload(filePath, {
-        folder: 'avatar-game'
-      });
-
-      const newImage = new Image({
-        img_id,
-        url: result.secure_url,
-        answer,
+      const newEpisode = new Episode({
+        code: epCode,
         title,
         season,
-        difficulty
+        episode_number
       });
-
-      await newImage.save();
-      console.log(`✅ Uploaded and saved ${file}`);
-    } catch (err) {
-      console.error(`❌ Error with ${file}: ${err.message}`);
+      console.log({ code: epCode, title, season, episode_number });
+      await newEpisode.save();
+      console.log(`Saved: ${epCode} - ${title}`);
     }
-  }
 
-  mongoose.connection.close(); // ✅ good practice to close it after the job
+    console.log("All episodes uploaded.");
+  } catch (error) {
+    console.error("Error uploading episodes:", error);
+  } finally {
+    mongoose.connection.close();
+  }
 };
 
-uploadImages();
+uploadEpisodes();

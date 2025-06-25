@@ -42,7 +42,7 @@
             >
               <option disabled selected>Book <%= season.number %>: <%= season.name %></option>
               <% episodes.filter(ep => ep.season === season.number).forEach(ep => { %>
-                <option value="<%= ep._id %>"><%= ep._id %> - <%= ep.title %></option>
+                <option value="<%= ep.code %>"><%= ep.code %> - <%= ep.title %></option>
               <% }) %>
             </select>
           </div>

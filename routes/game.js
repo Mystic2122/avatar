@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const Image = require('../schema/Image');
-const User = require('../schema/Users'); 
+const User = require('../schema/Users');
+const Episode = require('../schema/Episode')
 
 
 // GET /game
@@ -25,16 +26,11 @@ router.get('/', async (req, res) => {
       return res.send("⚠️ No images available for this difficulty.");
     }
 
-    const episodes = await Image.aggregate([
-      {
-        $group: {
-          _id: "$answer",
-          title: { $first: "$title" },
-          season: { $first: "$season" }
-        }
-      },
-      { $sort: { _id: 1 } }
-    ]);
+    const episodes = await Episode
+      .find({}, 'code title season episode_number')
+      .sort({ season: 1, episode_number: 1 })
+      .lean();
+
 
     if (req.session.score === undefined) {
       req.session.score = 0;

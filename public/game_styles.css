@@ -18,6 +18,8 @@
 
   margin: 20px;
   align-content: center;
+  position: relative;
+  z-index: 10;
 
   
 }

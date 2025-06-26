@@ -29,7 +29,10 @@ router.post('/', async (req, res) => {
     await newUser.save();
 
     console.log("User saved to database");
-    res.redirect(`/game?username=${encodeURIComponent(username)}`);
+    const user = await User.findOne({ username });
+    req.session.user = { username: user.username };
+    // redirect to SOMEWHERE
+    res.redirect(`/difficulty`);
   } catch (err) {
     console.error("Error saving user:", err);
     res.status(500).send('Database Error');

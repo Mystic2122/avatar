@@ -5,6 +5,7 @@ const imgSchema = new mongoose.Schema({
     url: String,
     answer: String, /* S1E01 */
     title: String,
+    season: Number,
     difficulty: String,
 
 })

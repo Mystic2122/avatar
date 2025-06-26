@@ -1,3 +1,5 @@
+/* Home Page */
+
 .wrapper {
   display: flex;
   flex-direction: column;  
@@ -14,7 +16,6 @@
   display: flex;
   gap: 10px;
   justify-content: center; 
-
 }
 
 .btn {
@@ -62,8 +63,14 @@
   transition: background-color 0.3s;
 }
 
+.slbtn:hover {
+  transition: 0.3s;
+  background-color: #cd5e03;
+}
+
 .btn-wrapper{
   justify-content: center;
+  align-items: center;
 }
 
 .inputbox{
@@ -77,3 +84,28 @@ html, body {
   width: 100%;
   overflow: hidden;
 }
+
+.sl-background {
+  position: fixed; /* removed from layout flow */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: -99;
+  background-image: url("/images/sl_back.jpeg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+
+.diff-wrapper{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  
+}
+

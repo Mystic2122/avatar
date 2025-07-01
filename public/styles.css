@@ -99,8 +99,14 @@ html, body {
   background-size: cover;
 }
 
-
 .diff-wrapper{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+
+}
+.diff-image{
   display: flex;
   position: absolute;
   z-index: -99;

@@ -12,21 +12,23 @@ router.get('/', async (req, res) => {
   const username = req.session.user.username;
   const difficulty = req.query.difficulty.toLowerCase() || 'easy';
 
-  console.log("🟢 /game GET hit");
-  console.log("🔍 User:", username, "| Difficulty:", difficulty);
+  console.log("Game loaded");
+  console.log("User:", username, "| Difficulty:", difficulty);
 
   try {
     const user = await User.findOne({ username });
-    const image = await Image.aggregate([
-      { $match: { difficulty } },
+    const [image] = await Image.aggregate([
+      { $match: { difficulty: difficulty } },
+      // random sample size 1
       { $sample: { size: 1 } }
     ]);
 
     if (!image || image.length === 0) {
-      return res.send("⚠️ No images available for this difficulty.");
+      return res.send("Can't find image");
     }
 
     const episodes = await Episode
+      // fields returned
       .find({}, 'code title season episode_number')
       .sort({ season: 1, episode_number: 1 })
       .lean();
@@ -36,18 +38,18 @@ router.get('/', async (req, res) => {
       req.session.score = 0;
     }
 
-    const highscore = user.highScores?.[difficulty] || 0;
+    const highscore = user.highScores?.[difficulty] ?? 0;
 
     res.render('game', {
       username,
       difficulty,
-      image: image[0],
+      image: image,
       episodes,
       score: req.session.score,
       highscore,
       wrong: false,
-      correctAnswerId: image[0].answer,
-      correctAnswerTitle: image[0].title
+      correctAnswerId: image.answer,
+      correctAnswerTitle: image.title
     });
 
   } catch (err) {
@@ -67,6 +69,10 @@ router.post('/', async (req, res) => {
 
   const isCorrect = guessedId === correctId;
   const currentScore = req.session.score || 0;
+  const image = await Image.aggregate([
+      { $match: { difficulty } },
+      { $sample: { size: 1 } }
+    ]);
 
   if (isCorrect) {
     req.session.score = currentScore + 1;
@@ -90,7 +96,7 @@ try {
   req.session.score = 0;
 
  
-  const newImage = await Image.aggregate([
+  const [newImage] = await Image.aggregate([
     { $match: { difficulty } },
     { $sample: { size: 1 } }
   ]);
@@ -104,13 +110,13 @@ try {
   res.render('game', {
       username,
       difficulty,
-      image: newImage[0],
+      image: newImage,
       episodes,
       score: req.session.score,
       highscore,
       wrong: true,
-      correctAnswerId: newImage[0].answer,
-      correctAnswerTitle: newImage[0].title
+      correctAnswerId: newImage.answer,
+      correctAnswerTitle: newImage.title
     });
 } catch (err) {
   console.error("❌ Error updating high score:", err);

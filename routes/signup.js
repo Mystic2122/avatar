@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.get('/', (req, res) => {
   res.render('signup');
+  console.log("signup page gotten")
 });
 
 router.post('/', async (req, res) => {

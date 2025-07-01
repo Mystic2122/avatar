@@ -102,10 +102,86 @@ html, body {
 
 .diff-wrapper{
   display: flex;
+  position: absolute;
+  z-index: -99;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  position: fixed; /* removed from layout flow */
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  z-index: -99;
+  background-image: url("/images/diff_background.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
   
 }
 
+
+.diff-wrapper{
+    display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.difficulty-buttons {
+  position: relative;
+  z-index: 70;
+  display: flex;           /* activates flexbox layout */
+  justify-content: center; /* keeps the row centred (use 'flex-start' if you prefer left-aligned) */
+  gap: 16px;               /* space between buttons */
+}
+
+.e-btn {
+  position: relative;
+  z-index: 99;
+  background-color: #007BFF;
+  display:flex;
+  align-items: center;
+  width: 70px;            /* consistent width */
+  height: 40px;
+  color: beige;
+  padding: 20px;
+  margin: 50px;
+  border-radius: 5px;
+  cursor: pointer;   
+}
+
+.m-btn {
+  background-color: green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 70px;            /* consistent width */
+  height: 40px;
+  color: beige;
+  padding: 20px;
+  margin: 50px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.h-btn {
+  background-color: red;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 70px;            /* consistent width */
+  height: 40px;
+  color: beige;
+  padding: 20px;
+  margin: 50px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
   if (!req.session.user) return res.redirect('/login');
 
   const username = req.session.user.username;
-  const difficulty = req.query.difficulty?.toLowerCase() || 'easy';
+  const difficulty = req.query.difficulty.toLowerCase() || 'easy';
 
   console.log("🟢 /game GET hit");
   console.log("🔍 User:", username, "| Difficulty:", difficulty);
@@ -46,8 +46,8 @@ router.get('/', async (req, res) => {
       score: req.session.score,
       highscore,
       wrong: false,
-      correctAnswerId: null,
-      correctAnswerTitle: null
+      correctAnswerId: image[0].answer,
+      correctAnswerTitle: image[0].title
     });
 
   } catch (err) {
@@ -89,33 +89,29 @@ try {
 
   req.session.score = 0;
 
+ 
   const newImage = await Image.aggregate([
     { $match: { difficulty } },
     { $sample: { size: 1 } }
   ]);
 
-  const episodes = await Image.aggregate([
-    {
-      $group: {
-        _id: "$answer",
-        title: { $first: "$title" },
-        season: { $first: "$season" }
-      }
-    },
-    { $sort: { _id: 1 } }
-  ]);
+  const episodes = await Episode
+      .find({}, 'code title season episode_number')
+      .sort({ season: 1, episode_number: 1 })
+      .lean();
 
+  const highscore = user.highScores?.[difficulty] || 0;
   res.render('game', {
-    username,
-    difficulty,
-    image: newImage[0],
-    episodes,
-    score: 0,
-    highscore: user.highScores[difficulty] || 0,
-    wrong: true,
-    correctAnswerId: correctId,
-    correctAnswerTitle: episodes.find(ep => ep._id === correctId)?.title || 'Unknown'
-  });
+      username,
+      difficulty,
+      image: newImage[0],
+      episodes,
+      score: req.session.score,
+      highscore,
+      wrong: true,
+      correctAnswerId: newImage[0].answer,
+      correctAnswerTitle: newImage[0].title
+    });
 } catch (err) {
   console.error("❌ Error updating high score:", err);
   res.status(500).send("Internal server error");

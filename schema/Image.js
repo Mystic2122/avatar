@@ -1,8 +1,15 @@
 const mongoose = require('mongoose');
 
 const imgSchema = new mongoose.Schema({
-    img_id: Number,
-    url: String,
+    img_id: {
+        type: Number, 
+        rquired:true
+    },
+    
+    url: {
+        type: String,
+        required:true
+    },
     answer: String, /* S1E01 */
     title: String,
     season: Number,

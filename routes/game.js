@@ -34,11 +34,13 @@ router.get('/', async (req, res) => {
       .lean();
 
 
+    
+
+    const highscore = user.highScores?.[difficulty] ?? 0;
+
     if (req.session.score === undefined) {
       req.session.score = 0;
     }
-
-    const highscore = user.highScores?.[difficulty] ?? 0;
 
     res.render('game', {
       username,
@@ -69,10 +71,6 @@ router.post('/', async (req, res) => {
 
   const isCorrect = guessedId === correctId;
   const currentScore = req.session.score || 0;
-  const image = await Image.aggregate([
-      { $match: { difficulty } },
-      { $sample: { size: 1 } }
-    ]);
 
   if (isCorrect) {
     req.session.score = currentScore + 1;

@@ -23,7 +23,6 @@ app.use(session({
 }));
 
 app.get("/", (req, res) => { //request and response
-  console.log('Here')
   res.render('index')
 }) 
 
